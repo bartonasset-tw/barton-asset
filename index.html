@@ -60,4 +60,36 @@
 
 <footer><div class="w"><b>BARTON｜巴頓國際資產管理</b><br>個人貸款媒合｜企業融資媒合｜資金需求諮詢<br>電話：0966-937-938<br><br>本網站提供一般資訊與媒合諮詢，不代表任何金融機構之核准、額度或利率承諾。實際申請條件、費用、利率、額度及審核結果，依個案、契約及相關金融服務機構規定為準。</div></footer>
 <a class="float" href="tel:0966937938">📞 立即來電 0966-937-938</a>
+<style>
+#fraudAlert{
+  position:fixed;inset:0;background:rgba(0,0,0,.78);
+  z-index:99999;display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+#fraudAlert .fraud-box{
+  width:min(520px,100%);background:#111;border:1px solid #c7a45d;
+  border-radius:18px;padding:28px;color:#fff;
+  box-shadow:0 20px 60px rgba(0,0,0,.55);
+}
+#fraudAlert h2{color:#d8b66a;margin:0 0 14px;font-size:25px}
+#fraudAlert p{line-height:1.8;color:#eee;margin:8px 0}
+#fraudAlert .fraud-phone{color:#d8b66a;font-weight:700}
+#fraudAlert button{
+  width:100%;margin-top:18px;padding:14px;border:0;border-radius:10px;
+  background:#c7a45d;color:#111;font-size:17px;font-weight:700;cursor:pointer;
+}
+</style>
+
+<div id="fraudAlert">
+  <div class="fraud-box">
+    <h2>🛡️ 巴頓防詐騙提醒</h2>
+    <p>為保障您的個人資料與權益，請留意不明人士冒用名義聯繫。</p>
+    <p>• 請認明「巴頓國際資產管理」官方聯絡資訊<br>
+    • 請勿向不明人士提供網銀密碼、簡訊驗證碼等重要資訊<br>
+    • 如收到可疑訊息或異常匯款要求，請先停止操作並與我們確認<br>
+    • 如有疑似詐騙情形，可撥打 165 反詐騙諮詢專線</p>
+    <p class="fraud-phone">巴頓國際資產管理<br>官方諮詢電話：0966-937-938</p>
+    <button onclick="document.getElementById('fraudAlert').style.display='none'">我已了解</button>
+  </div>
+</div>
 </body></html>
