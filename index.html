@@ -5,8 +5,128 @@
 </style></head><body>
 <nav><div class="w n"><div class="brand">BARTON｜巴頓國際資產管理</div><a class="btn" href="tel:0966937938">立即來電</a></div></nav>
 <header class="hero"><div class="w"><div class="ey">BARTON ASSET MANAGEMENT</div><h1>有資金需求？<br><span class="gold">先了解，再決定。</span></h1><p class="lead">個人資金｜企業週轉｜融資需求<br>不確定該從哪裡開始？先用一通電話把需求說清楚。</p><a class="btn" href="tel:0966937938">📞 0966-937-938 來電諮詢</a><div class="heroBox">個人貸款媒合　｜　企業融資媒合　｜　資金需求諮詢</div></div></header>
+<!-- BARTON 貸款試算器 -->
+<section id="loan-calculator" style="padding:65px 0;background:#101112;">
+<div class="w">
 
-<section class="alt" id="quick"><div class="w">
+  <div class="head">
+    <div class="ey">LOAN CALCULATOR</div>
+    <h2>貸款試算</h2>
+    <p>輸入預計金額、年利率與期數，快速了解每月預估還款。</p>
+  </div>
+
+  <div style="max-width:900px;margin:30px auto;background:#151618;border:1px solid #3a3427;border-radius:20px;padding:30px;">
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;">
+
+      <div>
+        <label style="display:block;margin-bottom:8px;color:#d8b66a;font-weight:700;">
+          貸款金額
+        </label>
+        <input id="loanAmount" type="number" min="1" placeholder="例如：300000"
+        style="width:100%;padding:14px;border-radius:10px;border:1px solid #444;background:#0b0c0d;color:#fff;font-size:16px;">
+      </div>
+
+      <div>
+        <label style="display:block;margin-bottom:8px;color:#d8b66a;font-weight:700;">
+          年利率 %
+        </label>
+        <input id="loanRate" type="number" min="0" step="0.01" placeholder="例如：6.5"
+        style="width:100%;padding:14px;border-radius:10px;border:1px solid #444;background:#0b0c0d;color:#fff;font-size:16px;">
+      </div>
+
+      <div>
+        <label style="display:block;margin-bottom:8px;color:#d8b66a;font-weight:700;">
+          貸款期數
+        </label>
+        <input id="loanMonths" type="number" min="1" placeholder="例如：36"
+        style="width:100%;padding:14px;border-radius:10px;border:1px solid #444;background:#0b0c0d;color:#fff;font-size:16px;">
+      </div>
+
+    </div>
+
+    <button type="button" onclick="bartonLoanCalculate()"
+    style="width:100%;margin-top:24px;padding:15px;border:0;border-radius:10px;background:#cfa957;color:#111;font-size:18px;font-weight:800;cursor:pointer;">
+      開始試算
+    </button>
+
+    <div id="loanResult" style="display:none;margin-top:28px;padding:25px;background:#0b0c0d;border:1px solid #c7a45d;border-radius:15px;text-align:center;">
+
+      <div style="color:#aaa;font-size:14px;">每月預估還款</div>
+
+      <div id="monthlyPayment"
+      style="font-size:36px;font-weight:800;color:#d8b66a;margin:8px 0 20px;">
+        NT$ 0
+      </div>
+
+      <div style="display:flex;justify-content:center;gap:35px;flex-wrap:wrap;">
+
+        <div>
+          <div style="color:#888;font-size:13px;">預估總利息</div>
+          <strong id="totalInterest">NT$ 0</strong>
+        </div>
+
+        <div>
+          <div style="color:#888;font-size:13px;">預估總還款</div>
+          <strong id="totalPayment">NT$ 0</strong>
+        </div>
+
+      </div>
+
+      <a href="tel:0966937938" class="btn" style="margin-top:24px;">
+        ☎ 對試算有問題？0966-937-938
+      </a>
+
+    </div>
+
+    <p style="font-size:12px;color:#888;line-height:1.7;margin-top:20px;">
+      ※ 本試算採本息平均攤還方式計算，結果僅供參考。
+      實際利率、費用、期數、額度及審核結果，依個案、契約及相關金融服務機構規定為準。
+    </p>
+
+  </div>
+</div>
+</section>
+
+<script>
+function bartonLoanCalculate() {
+  var amount = parseFloat(document.getElementById("loanAmount").value);
+  var annualRate = parseFloat(document.getElementById("loanRate").value);
+  var months = parseInt(document.getElementById("loanMonths").value);
+
+  if (!isFinite(amount) || amount <= 0 ||
+      !isFinite(annualRate) || annualRate < 0 ||
+      !isFinite(months) || months <= 0) {
+    alert("請輸入正確的貸款金額、年利率與期數。");
+    return;
+  }
+
+  var monthlyRate = annualRate / 100 / 12;
+  var monthly;
+
+  if (monthlyRate === 0) {
+    monthly = amount / months;
+  } else {
+    monthly = amount * monthlyRate *
+      Math.pow(1 + monthlyRate, months) /
+      (Math.pow(1 + monthlyRate, months) - 1);
+  }
+
+  var total = monthly * months;
+  var interest = total - amount;
+
+  function money(num) {
+    return "NT$ " + Math.round(num).toLocaleString("zh-TW");
+  }
+
+  document.getElementById("monthlyPayment").textContent = money(monthly);
+  document.getElementById("totalInterest").textContent = money(interest);
+  document.getElementById("totalPayment").textContent = money(total);
+  document.getElementById("loanResult").style.display = "block";
+}
+</script>
+
+  <section class="alt" id="quick"><div class="w">
 <div class="head"><div class="ey">START HERE</div><h2>不知道怎麼問？這些都可以先問。</h2><p>不用先研究一堆金融名詞，把你的問題直接說出來就好。</p></div>
 <div class="needgrid">
 <div class="need"><h3>「我需要一筆資金，可以先了解嗎？」</h3><p>可以，先從用途、需求金額與目前狀況開始聊。</p></div>
