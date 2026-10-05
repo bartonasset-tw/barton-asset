@@ -5,124 +5,392 @@
 </style></head><body>
 <nav><div class="w n"><div class="brand">BARTON｜巴頓國際資產管理</div><a class="btn" href="tel:0966937938">立即來電</a></div></nav>
 <header class="hero"><div class="w"><div class="ey">BARTON ASSET MANAGEMENT</div><h1>有資金需求？<br><span class="gold">先了解，再決定。</span></h1><p class="lead">個人資金｜企業週轉｜融資需求<br>不確定該從哪裡開始？先用一通電話把需求說清楚。</p><a class="btn" href="tel:0966937938">📞 0966-937-938 來電諮詢</a><div class="heroBox">個人貸款媒合　｜　企業融資媒合　｜　資金需求諮詢</div></div></header>
-<!-- BARTON 貸款試算器 -->
-<section id="loan-calculator" style="padding:65px 0;background:#101112;">
+<!-- BARTON 資金試算工具 -->
+<section id="barton-tools" style="padding:65px 0;background:#101112;">
 <div class="w">
 
-  <div class="head">
-    <div class="ey">LOAN CALCULATOR</div>
-    <h2>貸款試算</h2>
-    <p>輸入預計金額、年利率與期數，快速了解每月預估還款。</p>
+<div class="head">
+  <div class="ey">BARTON FINANCIAL TOOLS</div>
+  <h2>資金試算工具</h2>
+  <p>先用數字了解不同條件可能產生的差異，再決定下一步。</p>
+</div>
+
+<style>
+.barton-tool{
+  max-width:950px;margin:24px auto;background:#151618;
+  border:1px solid #39352c;border-radius:18px;padding:28px;
+}
+.barton-tool h3{margin:0 0 8px;color:#d8b66a;font-size:24px}
+.barton-tool .desc{color:#aaa;line-height:1.7;margin-bottom:22px}
+.bt-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;
+}
+.bt-field label{
+  display:block;color:#d8b66a;font-weight:700;margin-bottom:8px;
+}
+.bt-field input{
+  width:100%;padding:14px;border-radius:10px;border:1px solid #444;
+  background:#0b0c0d;color:#fff;font-size:16px;
+}
+.bt-btn{
+  width:100%;margin-top:20px;padding:15px;border:0;border-radius:10px;
+  background:#cfa957;color:#111;font-size:17px;font-weight:800;cursor:pointer;
+}
+.bt-result{
+  display:none;margin-top:22px;padding:22px;background:#0b0c0d;
+  border:1px solid #c7a45d;border-radius:14px;
+}
+.bt-big{
+  color:#d8b66a;font-size:34px;font-weight:800;margin:6px 0 14px;
+}
+.bt-row{
+  display:flex;gap:30px;flex-wrap:wrap;color:#ddd;line-height:1.8;
+}
+.bt-note{font-size:12px;color:#888;line-height:1.7;margin-top:18px}
+.bt-table{
+  width:100%;border-collapse:collapse;margin-top:16px;color:#eee;
+}
+.bt-table th,.bt-table td{
+  padding:12px 8px;border-bottom:1px solid #333;text-align:right;
+}
+.bt-table th:first-child,.bt-table td:first-child{text-align:left}
+.bt-table th{color:#d8b66a}
+.bt-loan-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;
+}
+@media(max-width:600px){
+  .barton-tool{padding:20px}
+  .bt-loan-row{grid-template-columns:1fr}
+  .bt-table{font-size:13px}
+  .bt-table th,.bt-table td{padding:9px 4px}
+}
+</style>
+
+
+<!-- 01 貸款試算 -->
+<div class="barton-tool">
+<h3>01｜貸款試算</h3>
+<p class="desc">輸入金額、年利率與期數，試算每月還款、總利息與總還款。</p>
+
+<div class="bt-grid">
+  <div class="bt-field">
+    <label>貸款金額</label>
+    <input id="c1Amount" type="number" min="1" placeholder="例如：300000">
+  </div>
+  <div class="bt-field">
+    <label>年利率 %</label>
+    <input id="c1Rate" type="number" min="0" step="0.01" placeholder="例如：6.5">
+  </div>
+  <div class="bt-field">
+    <label>貸款期數</label>
+    <input id="c1Months" type="number" min="1" placeholder="例如：36">
+  </div>
+</div>
+
+<button class="bt-btn" type="button" onclick="calcLoan()">開始試算</button>
+
+<div id="c1Result" class="bt-result">
+  <div style="color:#aaa">每月預估還款</div>
+  <div id="c1Monthly" class="bt-big">NT$ 0</div>
+  <div class="bt-row">
+    <div>預估總利息：<strong id="c1Interest"></strong></div>
+    <div>預估總還款：<strong id="c1Total"></strong></div>
+  </div>
+</div>
+</div>
+
+
+<!-- 02 不同期數比較 -->
+<div class="barton-tool">
+<h3>02｜不同期數比較</h3>
+<p class="desc">同一筆金額與利率，一次比較不同期數的月付與總利息。</p>
+
+<div class="bt-grid">
+  <div class="bt-field">
+    <label>貸款金額</label>
+    <input id="c2Amount" type="number" min="1" placeholder="例如：300000">
+  </div>
+  <div class="bt-field">
+    <label>年利率 %</label>
+    <input id="c2Rate" type="number" min="0" step="0.01" placeholder="例如：6.5">
+  </div>
+</div>
+
+<button class="bt-btn" type="button" onclick="compareTerms()">開始比較</button>
+
+<div id="c2Result" class="bt-result">
+<table class="bt-table">
+<thead>
+<tr>
+  <th>期數</th>
+  <th>每月預估還款</th>
+  <th>預估總利息</th>
+  <th>預估總還款</th>
+</tr>
+</thead>
+<tbody id="c2Body"></tbody>
+</table>
+</div>
+</div>
+
+
+<!-- 03 月付反推 -->
+<div class="barton-tool">
+<h3>03｜月付反推試算</h3>
+<p class="desc">輸入希望負擔的每月還款、假設利率與期數，反推數學上對應的本金。</p>
+
+<div class="bt-grid">
+  <div class="bt-field">
+    <label>希望每月還款</label>
+    <input id="c3Monthly" type="number" min="1" placeholder="例如：8000">
+  </div>
+  <div class="bt-field">
+    <label>假設年利率 %</label>
+    <input id="c3Rate" type="number" min="0" step="0.01" placeholder="例如：6.5">
+  </div>
+  <div class="bt-field">
+    <label>貸款期數</label>
+    <input id="c3Months" type="number" min="1" placeholder="例如：60">
+  </div>
+</div>
+
+<button class="bt-btn" type="button" onclick="reverseLoan()">開始反推</button>
+
+<div id="c3Result" class="bt-result">
+  <div style="color:#aaa">依輸入條件反推本金約</div>
+  <div id="c3AmountResult" class="bt-big">NT$ 0</div>
+  <div style="color:#aaa;font-size:13px">
+    此為純數學試算，不代表實際可申請或核准之貸款額度。
+  </div>
+</div>
+</div>
+
+
+<!-- 04 貸款整合比較 -->
+<div class="barton-tool">
+<h3>04｜貸款整合比較</h3>
+<p class="desc">輸入目前最多三筆貸款，再用假設利率與期數比較月付差異。</p>
+
+<div style="color:#d8b66a;font-weight:700;margin-bottom:12px;">目前貸款</div>
+
+<div class="bt-loan-row">
+  <div class="bt-field">
+    <label>貸款 1 剩餘本金</label>
+    <input id="d1Balance" type="number" min="0" placeholder="例如：200000">
+  </div>
+  <div class="bt-field">
+    <label>貸款 1 目前月付</label>
+    <input id="d1Monthly" type="number" min="0" placeholder="例如：8000">
+  </div>
+</div>
+
+<div class="bt-loan-row">
+  <div class="bt-field">
+    <label>貸款 2 剩餘本金</label>
+    <input id="d2Balance" type="number" min="0" placeholder="沒有可留白">
+  </div>
+  <div class="bt-field">
+    <label>貸款 2 目前月付</label>
+    <input id="d2Monthly" type="number" min="0" placeholder="沒有可留白">
+  </div>
+</div>
+
+<div class="bt-loan-row">
+  <div class="bt-field">
+    <label>貸款 3 剩餘本金</label>
+    <input id="d3Balance" type="number" min="0" placeholder="沒有可留白">
+  </div>
+  <div class="bt-field">
+    <label>貸款 3 目前月付</label>
+    <input id="d3Monthly" type="number" min="0" placeholder="沒有可留白">
+  </div>
+</div>
+
+<div style="color:#d8b66a;font-weight:700;margin:22px 0 12px;">假設整合條件</div>
+
+<div class="bt-grid">
+  <div class="bt-field">
+    <label>假設年利率 %</label>
+    <input id="dRate" type="number" min="0" step="0.01" placeholder="例如：6.5">
+  </div>
+  <div class="bt-field">
+    <label>假設期數</label>
+    <input id="dMonths" type="number" min="1" placeholder="例如：84">
+  </div>
+</div>
+
+<button class="bt-btn" type="button" onclick="consolidateLoan()">開始比較</button>
+
+<div id="dResult" class="bt-result">
+  <div class="bt-row">
+    <div>目前剩餘本金合計：<strong id="dBalanceTotal"></strong></div>
+    <div>目前月付合計：<strong id="dMonthlyOld"></strong></div>
   </div>
 
-  <div style="max-width:900px;margin:30px auto;background:#151618;border:1px solid #3a3427;border-radius:20px;padding:30px;">
+  <div style="margin-top:20px;color:#aaa;">依假設條件試算的新月付</div>
+  <div id="dMonthlyNew" class="bt-big">NT$ 0</div>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;">
+  <div id="dDifference" style="color:#ddd;line-height:1.8;"></div>
+</div>
+</div>
 
-      <div>
-        <label style="display:block;margin-bottom:8px;color:#d8b66a;font-weight:700;">
-          貸款金額
-        </label>
-        <input id="loanAmount" type="number" min="1" placeholder="例如：300000"
-        style="width:100%;padding:14px;border-radius:10px;border:1px solid #444;background:#0b0c0d;color:#fff;font-size:16px;">
-      </div>
 
-      <div>
-        <label style="display:block;margin-bottom:8px;color:#d8b66a;font-weight:700;">
-          年利率 %
-        </label>
-        <input id="loanRate" type="number" min="0" step="0.01" placeholder="例如：6.5"
-        style="width:100%;padding:14px;border-radius:10px;border:1px solid #444;background:#0b0c0d;color:#fff;font-size:16px;">
-      </div>
+<div style="max-width:950px;margin:25px auto;text-align:center;">
+  <p style="color:#d8b66a;font-weight:700;font-size:18px;">
+    不確定數字怎麼看？可以先電話了解。
+  </p>
+  <a href="tel:0966937938" class="btn">☎ 0966-937-938　來電諮詢</a>
 
-      <div>
-        <label style="display:block;margin-bottom:8px;color:#d8b66a;font-weight:700;">
-          貸款期數
-        </label>
-        <input id="loanMonths" type="number" min="1" placeholder="例如：36"
-        style="width:100%;padding:14px;border-radius:10px;border:1px solid #444;background:#0b0c0d;color:#fff;font-size:16px;">
-      </div>
+  <p class="bt-note">
+    ※ 以上工具採本息平均攤還等數學方式進行試算，結果僅供參考，
+    不代表實際核准額度、利率、費用或審核結果。
+    實際條件依個案、契約及相關金融服務機構規定為準。
+  </p>
+</div>
 
-    </div>
-
-    <button type="button" onclick="bartonLoanCalculate()"
-    style="width:100%;margin-top:24px;padding:15px;border:0;border-radius:10px;background:#cfa957;color:#111;font-size:18px;font-weight:800;cursor:pointer;">
-      開始試算
-    </button>
-
-    <div id="loanResult" style="display:none;margin-top:28px;padding:25px;background:#0b0c0d;border:1px solid #c7a45d;border-radius:15px;text-align:center;">
-
-      <div style="color:#aaa;font-size:14px;">每月預估還款</div>
-
-      <div id="monthlyPayment"
-      style="font-size:36px;font-weight:800;color:#d8b66a;margin:8px 0 20px;">
-        NT$ 0
-      </div>
-
-      <div style="display:flex;justify-content:center;gap:35px;flex-wrap:wrap;">
-
-        <div>
-          <div style="color:#888;font-size:13px;">預估總利息</div>
-          <strong id="totalInterest">NT$ 0</strong>
-        </div>
-
-        <div>
-          <div style="color:#888;font-size:13px;">預估總還款</div>
-          <strong id="totalPayment">NT$ 0</strong>
-        </div>
-
-      </div>
-
-      <a href="tel:0966937938" class="btn" style="margin-top:24px;">
-        ☎ 對試算有問題？0966-937-938
-      </a>
-
-    </div>
-
-    <p style="font-size:12px;color:#888;line-height:1.7;margin-top:20px;">
-      ※ 本試算採本息平均攤還方式計算，結果僅供參考。
-      實際利率、費用、期數、額度及審核結果，依個案、契約及相關金融服務機構規定為準。
-    </p>
-
-  </div>
 </div>
 </section>
 
-<script>
-function bartonLoanCalculate() {
-  var amount = parseFloat(document.getElementById("loanAmount").value);
-  var annualRate = parseFloat(document.getElementById("loanRate").value);
-  var months = parseInt(document.getElementById("loanMonths").value);
 
-  if (!isFinite(amount) || amount <= 0 ||
-      !isFinite(annualRate) || annualRate < 0 ||
-      !isFinite(months) || months <= 0) {
+<script>
+function btNumber(id){
+  var value = parseFloat(document.getElementById(id).value);
+  return isFinite(value) ? value : 0;
+}
+
+function btMoney(value){
+  return "NT$ " + Math.round(value).toLocaleString("zh-TW");
+}
+
+function btPayment(amount, annualRate, months){
+  var rate = annualRate / 100 / 12;
+
+  if(rate === 0){
+    return amount / months;
+  }
+
+  return amount * rate * Math.pow(1 + rate, months) /
+    (Math.pow(1 + rate, months) - 1);
+}
+
+function calcLoan(){
+  var amount = btNumber("c1Amount");
+  var rate = btNumber("c1Rate");
+  var months = btNumber("c1Months");
+
+  if(amount <= 0 || rate < 0 || months <= 0){
     alert("請輸入正確的貸款金額、年利率與期數。");
     return;
   }
 
-  var monthlyRate = annualRate / 100 / 12;
-  var monthly;
-
-  if (monthlyRate === 0) {
-    monthly = amount / months;
-  } else {
-    monthly = amount * monthlyRate *
-      Math.pow(1 + monthlyRate, months) /
-      (Math.pow(1 + monthlyRate, months) - 1);
-  }
-
+  var monthly = btPayment(amount, rate, months);
   var total = monthly * months;
   var interest = total - amount;
 
-  function money(num) {
-    return "NT$ " + Math.round(num).toLocaleString("zh-TW");
+  document.getElementById("c1Monthly").textContent = btMoney(monthly);
+  document.getElementById("c1Interest").textContent = btMoney(interest);
+  document.getElementById("c1Total").textContent = btMoney(total);
+  document.getElementById("c1Result").style.display = "block";
+}
+
+function compareTerms(){
+  var amount = btNumber("c2Amount");
+  var rate = btNumber("c2Rate");
+
+  if(amount <= 0 || rate < 0){
+    alert("請輸入正確的貸款金額與年利率。");
+    return;
   }
 
-  document.getElementById("monthlyPayment").textContent = money(monthly);
-  document.getElementById("totalInterest").textContent = money(interest);
-  document.getElementById("totalPayment").textContent = money(total);
-  document.getElementById("loanResult").style.display = "block";
+  var terms = [24,36,48,60,84];
+  var html = "";
+
+  terms.forEach(function(months){
+    var monthly = btPayment(amount, rate, months);
+    var total = monthly * months;
+    var interest = total - amount;
+
+    html += "<tr>" +
+      "<td>" + months + " 期</td>" +
+      "<td>" + btMoney(monthly) + "</td>" +
+      "<td>" + btMoney(interest) + "</td>" +
+      "<td>" + btMoney(total) + "</td>" +
+      "</tr>";
+  });
+
+  document.getElementById("c2Body").innerHTML = html;
+  document.getElementById("c2Result").style.display = "block";
+}
+
+function reverseLoan(){
+  var monthly = btNumber("c3Monthly");
+  var annualRate = btNumber("c3Rate");
+  var months = btNumber("c3Months");
+
+  if(monthly <= 0 || annualRate < 0 || months <= 0){
+    alert("請輸入正確的月付、年利率與期數。");
+    return;
+  }
+
+  var rate = annualRate / 100 / 12;
+  var amount;
+
+  if(rate === 0){
+    amount = monthly * months;
+  }else{
+    amount = monthly *
+      (Math.pow(1 + rate, months) - 1) /
+      (rate * Math.pow(1 + rate, months));
+  }
+
+  document.getElementById("c3AmountResult").textContent = btMoney(amount);
+  document.getElementById("c3Result").style.display = "block";
+}
+
+function consolidateLoan(){
+  var balance =
+    btNumber("d1Balance") +
+    btNumber("d2Balance") +
+    btNumber("d3Balance");
+
+  var oldMonthly =
+    btNumber("d1Monthly") +
+    btNumber("d2Monthly") +
+    btNumber("d3Monthly");
+
+  var rate = btNumber("dRate");
+  var months = btNumber("dMonths");
+
+  if(balance <= 0 || rate < 0 || months <= 0){
+    alert("請至少輸入一筆剩餘本金，並填寫假設利率與期數。");
+    return;
+  }
+
+  var newMonthly = btPayment(balance, rate, months);
+  var difference = oldMonthly - newMonthly;
+
+  document.getElementById("dBalanceTotal").textContent = btMoney(balance);
+  document.getElementById("dMonthlyOld").textContent = btMoney(oldMonthly);
+  document.getElementById("dMonthlyNew").textContent = btMoney(newMonthly);
+
+  if(oldMonthly > 0){
+    if(difference > 0){
+      document.getElementById("dDifference").textContent =
+        "依此假設條件試算，每月還款差額約 " + btMoney(difference) + "。";
+    }else if(difference < 0){
+      document.getElementById("dDifference").textContent =
+        "依此假設條件試算，每月還款約增加 " + btMoney(Math.abs(difference)) + "。";
+    }else{
+      document.getElementById("dDifference").textContent =
+        "依此假設條件試算，月付金額大致相同。";
+    }
+  }else{
+    document.getElementById("dDifference").textContent =
+      "若填入目前各筆月付，可進一步比較月付差異。";
+  }
+
+  document.getElementById("dResult").style.display = "block";
 }
 </script>
 
