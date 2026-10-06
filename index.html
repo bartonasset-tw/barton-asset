@@ -98,12 +98,91 @@
 }
 
 /* 手機版 */
+  .barton-mobile-toggle{
+  display:none;
+}
 @media(max-width:900px){
+  .barton-mobile-toggle{
+  display:block;
+  margin-left:auto;
+  padding:8px 12px;
+  border:1px solid #cfa957;
+  border-radius:8px;
+  background:transparent;
+  color:#d8b66a;
+  font-size:24px;
+  cursor:pointer;
+}
   .barton-nav .n{
     min-height:64px;
     gap:10px;
   }
+  .barton-menu{
+  display:none;
+}
 
+.barton-menu.mobile-open{
+  display:flex;
+  position:absolute;
+  top:64px;
+  left:0;
+  right:0;
+  width:100%;
+  flex-direction:column;
+  align-items:stretch;
+  gap:0;
+  padding:12px 20px 18px;
+  background:#0b0c0d;
+  border-top:1px solid #2d2921;
+  border-bottom:1px solid #3a3428;
+  box-shadow:0 15px 30px rgba(0,0,0,.45);
+  overflow:visible;
+  z-index:9999;
+}
+
+.barton-menu.mobile-open > a,
+.barton-menu.mobile-open .barton-dropdown > a{
+  display:block;
+  width:100%;
+  padding:13px 8px;
+  border-bottom:1px solid #252525;
+  color:#eee;
+  text-align:left;
+}
+
+.barton-menu.mobile-open .barton-dropdown{
+  width:100%;
+  padding:0;
+}
+/* 手機版資金試算子選單 */
+@media(max-width:900px){
+
+  .barton-menu.mobile-open .barton-dropdown-menu{
+    display:none;
+    position:static;
+    transform:none;
+    width:100%;
+    min-width:0;
+    padding:4px 0 8px 14px;
+    background:#111214;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+  }
+
+  .barton-menu.mobile-open .barton-dropdown-menu.mobile-submenu-open{
+    display:block;
+  }
+
+  .barton-menu.mobile-open .barton-dropdown-menu a{
+    display:block;
+    padding:11px 12px;
+    color:#cfcfcf;
+    border-bottom:1px solid #252525;
+    font-size:13px;
+  }
+
+}
   .barton-menu{
     overflow-x:auto;
     justify-content:flex-start;
@@ -139,7 +218,7 @@
       <a href="#top">首頁</a>
 
       <div class="barton-dropdown">
-        <a href="#barton-tools">資金試算 ▼</a>
+     <a href="#barton-tools" onclick="if(window.innerWidth<=900){event.preventDefault();bartonToggleSubmenu();}">資金試算 ▼</a>
         <div class="barton-dropdown-menu">
           <a href="#loan-calculator">貸款試算</a>
           <a href="#term-comparison">不同期數比較</a>
@@ -154,7 +233,7 @@
       <a href="#faq">常見問題</a>
       <a href="#about">關於巴頓</a>
     </div>
-
+<button class="barton-mobile-toggle" type="button" onclick="bartonToggleMenu()" aria-label="開啟選單">☰</button>
     <a class="btn" href="tel:0966937938">立即來電</a>
   </div>
 </nav>
@@ -730,4 +809,18 @@ function consolidateLoan(){
     <button onclick="document.getElementById('fraudAlert').style.display='none'">我已了解</button>
   </div>
 </div>
-</body></html>
+<script>
+function bartonToggleMenu(){
+  var menu = document.querySelector(".barton-menu");
+  if(menu){
+    menu.classList.toggle("mobile-open");
+  }
+}
+
+function bartonToggleSubmenu(){
+  var submenu = document.querySelector(".barton-dropdown-menu");
+  if(submenu){
+    submenu.classList.toggle("mobile-submenu-open");
+  }
+}
+</script>
